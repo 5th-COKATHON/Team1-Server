@@ -12,6 +12,7 @@ import cotato.cokathon_backend.common.dto.DataResponse;
 import cotato.cokathon_backend.common.dto.ErrorResponse;
 import cotato.cokathon_backend.domains.member.dto.request.CreateMemberRequest;
 import cotato.cokathon_backend.domains.member.dto.response.CreateMemberResponse;
+import cotato.cokathon_backend.domains.member.dto.response.FindMemberEmotionResponse;
 import cotato.cokathon_backend.domains.member.dto.response.FindMemberPointResponse;
 import cotato.cokathon_backend.domains.member.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -62,6 +63,11 @@ public class MemberController {
 			@ApiResponse(
 				responseCode = "200",
 				description = "성공"
+			),
+			@ApiResponse(
+				responseCode = "404",
+				description = "멤버를 찾을 수 없습니다.[M-002]",
+				content = @Content(schema = @Schema(implementation = ErrorResponse.class))
 			)
 		}
 	)
@@ -69,6 +75,31 @@ public class MemberController {
 		@PathVariable Long memberId
 	) {
 		FindMemberPointResponse response = memberService.findMemberPoint(memberId);
+
+		return ResponseEntity.ok(DataResponse.from(response));
+	}
+
+	@GetMapping("/{memberId}/emotions")
+	@Operation(
+		summary = "감정 조회",
+		description = """
+			멤버의 감정 포인트들을 조회한다.""",
+		responses = {
+			@ApiResponse(
+				responseCode = "200",
+				description = "성공"
+			),
+			@ApiResponse(
+				responseCode = "404",
+				description = "멤버를 찾을 수 없습니다.[M-002]",
+				content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+			)
+		}
+	)
+	public ResponseEntity<DataResponse<FindMemberEmotionResponse>> findMemberEmotion(
+		@PathVariable Long memberId
+	) {
+		FindMemberEmotionResponse response = memberService.findMemberEmotion(memberId);
 
 		return ResponseEntity.ok(DataResponse.from(response));
 	}

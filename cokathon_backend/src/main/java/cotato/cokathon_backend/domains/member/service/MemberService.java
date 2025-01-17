@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import cotato.cokathon_backend.common.exception.ApiException;
 import cotato.cokathon_backend.domains.member.dto.request.CreateMemberRequest;
 import cotato.cokathon_backend.domains.member.dto.response.CreateMemberResponse;
+import cotato.cokathon_backend.domains.member.dto.response.FindMemberEmotionResponse;
 import cotato.cokathon_backend.domains.member.dto.response.FindMemberPointResponse;
 import cotato.cokathon_backend.domains.member.entity.Member;
 import cotato.cokathon_backend.domains.member.entity.MemberEmotion;
@@ -50,5 +51,13 @@ public class MemberService {
 			.orElseThrow(() -> ApiException.from(MEMBER_NOT_FOUND));
 
 		return new FindMemberPointResponse(member.getPositive(), member.getNegative());
+	}
+
+	// 멤버의 감정 포인트 조회
+	public FindMemberEmotionResponse findMemberEmotion(Long memberId) {
+		Member member = memberRepository.findById(memberId)
+			.orElseThrow(() -> ApiException.from(MEMBER_NOT_FOUND));
+
+		return FindMemberEmotionResponse.from(member.getMemberEmotion());
 	}
 }

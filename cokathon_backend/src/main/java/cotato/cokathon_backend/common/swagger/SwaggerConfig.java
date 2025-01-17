@@ -17,8 +17,8 @@ public class SwaggerConfig {
 
 	private Info apiInfo() {
 		return new Info()
-			.title("백엔드 네트워킹2 api 명세서")
-			.description("백엔드 네트워킹2 api 명세서입니다.")
+			.title("api 명세서")
+			.description("api 명세서입니다.")
 			.version("1.0.0");
 	}
 }
