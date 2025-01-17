@@ -23,5 +23,6 @@ public class GPTEmotionResponse {
 	private int gratitude;
 	private int regret;
 	private int hope;
-	private String review;
+	private String devil_review;
+	private String angel_review;
 }

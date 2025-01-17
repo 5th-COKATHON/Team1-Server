@@ -44,12 +44,12 @@ public class ChatService {
 
 	@Transactional
 	public CalcEmotionPointResponse calcEmotionPointAndSave(String prompt, Long memberId) {
-		GPTEmotionResponse emotionResponse = chat(prompt);
-		EmotionPointResponse emotionPointResponse = memberService.calcEmotionPoint(emotionResponse);
+		GPTEmotionResponse gptEmotionResponse = chat(prompt);
+		EmotionPointResponse emotionPointResponse = memberService.calcEmotionPoint(gptEmotionResponse);
 
-		updateMemberEmotion(memberId, emotionResponse, emotionPointResponse);
+		updateMemberEmotion(memberId, gptEmotionResponse, emotionPointResponse);
 
-		return new CalcEmotionPointResponse(emotionResponse, emotionPointResponse);
+		return new CalcEmotionPointResponse(gptEmotionResponse, emotionPointResponse);
 	}
 
 	@Transactional
@@ -73,11 +73,17 @@ public class ChatService {
 			The emotions to identify and count are: happiness, sadness, anger, fear, love, disgust, surprise, gratitude, regret, and hope. 
 			For each emotion, provide a count of how many times it is expressed in the text. 
 			
-			In addition, provide a detailed review of the diary entry in Korean. 
-			Your review should include:
-			- What emotions stood out the most.
-			- Your reflections on the diary's content.
-			- Empathy, suggestions, or encouragement if applicable.
+			Additionally, provide two separate, detailed reviews of the diary entry in Korean:
+			1. **천사 리뷰**:
+			    - Warm, empathetic, and encouraging tone.
+			    - Provide a deep analysis of the positive emotions and the user's actions or decisions.
+			    - Highlight strengths, show understanding of struggles, and provide hope or actionable suggestions for the future.
+	
+			2. **악마 리뷰**:
+			    - Harsh, blunt, and critical tone, but with constructive feedback.
+			    - Analyze the negative emotions and point out areas where the user could improve or act differently.
+			    - Be straightforward and a bit mischievous, but ensure the review is helpful.
+	
 			
 			Here is the diary entry: 
 			""" + prompt + """
@@ -94,7 +100,8 @@ public class ChatService {
 			  "gratitude": <count>,
 			  "regret": <count>,
 			  "hope": <count>,
-			  "review": "<리뷰 내용 (한국어로 작성)>"
+			  "devil_review": "<악마 리뷰 내용 (한국어로 작성)>",
+			  "angel_review": "<천사 리뷰 내용 (한국어로 작성)>"
 			}
 			""";
 
