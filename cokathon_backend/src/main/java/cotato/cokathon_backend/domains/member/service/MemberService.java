@@ -27,7 +27,9 @@ public class MemberService {
 	public CreateMemberResponse createMember(CreateMemberRequest request) {
 		// 이메일 중복 시 에러 발생
 		if (isExistEmail(request.email())) {
-			throw ApiException.from(MEMBER_EMAIL_DUPLICATION);
+			Member member = memberRepository.findByEmail(request.email())
+				.orElseThrow(() -> ApiException.from(MEMBER_NOT_FOUND));
+			return new CreateMemberResponse(member.getId());
 		}
 
 		MemberEmotion memberEmotion = new MemberEmotion();
