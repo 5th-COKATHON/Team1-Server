@@ -20,24 +20,24 @@ jobs:
         distribution: 'temurin'
 
     - uses: actions/checkout@v4
-    - run: touch ./cokathon-backend/src/main/resources/application.properties
-    - run: echo "${{ secrets.PROPERTIES }}" > ./cokathon-backend/src/main/resources/application.properties
-    - run: cat ./cokathon-backend/src/main/resources/application.properties
+    - run: touch ./cokathon_backend/src/main/resources/application.properties
+    - run: echo "${{ secrets.PROPERTIES }}" > ./cokathon_backend/src/main/resources/application.properties
+    - run: cat ./cokathon_backend/src/main/resources/application.properties
 
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
 
     - name: Set Gradle Wrapper executable permission
-      run: chmod +x ./cokathon-backend/gradlew
+      run: chmod +x ./cokathon_backend/gradlew
 
     - name: Build with Gradle Wrapper
-      run: cd cokathon-backend/ && ./gradlew build
+      run: cd cokathon_backend/ && ./gradlew build
 
     - name: Upload build artifact
       uses: actions/upload-artifact@v3
       with:
         name: backend
-        path: ./cokathon-backend/build/libs/backend-0.0.1-SNAPSHOT.jar
+        path: ./cokathon_backend/build/libs/backend-0.0.1-SNAPSHOT.jar
 
   deploy:
     needs: build
@@ -48,12 +48,12 @@ jobs:
       uses: actions/download-artifact@v3
       with:
         name: backend
-        path: ./cokathon-backend/build/libs/
+        path: ./cokathon_backend/build/libs/
 
     - name: Deploy to EC2
       run: |
         echo "${{ secrets.EC2_SSH_KEY }}" > sync_spot_dev.pem
         chmod 600 sync_spot_dev.pem
-        scp -i sync_spot_dev.pem -o StrictHostKeyChecking=no ./cokathon-backend/build/libs/backend-0.0.1-SNAPSHOT.jar ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USERNAME }}/backend-0.0.1-SNAPSHOT.jar
+        scp -i sync_spot_dev.pem -o StrictHostKeyChecking=no ./cokathon_backend/build/libs/backend-0.0.1-SNAPSHOT.jar ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USERNAME }}/backend-0.0.1-SNAPSHOT.jar
         ssh -i sync_spot_dev.pem -o StrictHostKeyChecking=no ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} "pgrep java | xargs kill -9; nohup java -jar /home/${{ secrets.EC2_USERNAME }}/backend-0.0.1-SNAPSHOT.jar &"
         rm -f sync_spot_dev.pem
