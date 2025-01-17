@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import cotato.cokathon_backend.common.exception.ApiException;
-import cotato.cokathon_backend.domains.member.dto.CreateMemberRequest;
-import cotato.cokathon_backend.domains.member.dto.CreateMemberResponse;
+import cotato.cokathon_backend.domains.member.dto.request.CreateMemberRequest;
+import cotato.cokathon_backend.domains.member.dto.response.CreateMemberResponse;
 import cotato.cokathon_backend.domains.member.entity.Member;
 import cotato.cokathon_backend.domains.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;

@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import cotato.cokathon_backend.common.dto.DataResponse;
 import cotato.cokathon_backend.common.dto.ErrorResponse;
-import cotato.cokathon_backend.domains.member.dto.CreateMemberRequest;
-import cotato.cokathon_backend.domains.member.dto.CreateMemberResponse;
+import cotato.cokathon_backend.domains.member.dto.request.CreateMemberRequest;
+import cotato.cokathon_backend.domains.member.dto.response.CreateMemberResponse;
 import cotato.cokathon_backend.domains.member.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
