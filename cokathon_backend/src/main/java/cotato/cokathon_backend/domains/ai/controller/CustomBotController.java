@@ -15,7 +15,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import cotato.cokathon_backend.domains.ai.dto.ChatGPTRequest;
 import cotato.cokathon_backend.domains.ai.dto.ChatGPTResponse;
 import cotato.cokathon_backend.domains.ai.dto.EmotionResponse;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/bot")
 public class CustomBotController {
@@ -57,10 +59,10 @@ public class CustomBotController {
 		ChatGPTRequest request = new ChatGPTRequest(model, processedPrompt);
 
 		// GPT 응답을 EmotionResponse로 매핑
-		String jsonResponse = template.postForObject(apiURL, request, String.class);
+		ChatGPTResponse gptResponse = template.postForObject(apiURL, request, ChatGPTResponse.class);
 		ObjectMapper objectMapper = new ObjectMapper();
 		try {
-			return objectMapper.readValue(jsonResponse, EmotionResponse.class);
+			return objectMapper.readValue(gptResponse.getChoices().get(0).getMessage().getContent(), EmotionResponse.class);
 		} catch (JsonProcessingException e) {
 			throw new RuntimeException("Failed to parse GPT response", e);
 		}
