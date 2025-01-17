@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class EmotionResponse {
+public class GPTEmotionResponse {
 
 	private int happiness;
 	private int sadness;
@@ -23,4 +23,5 @@ public class EmotionResponse {
 	private int gratitude;
 	private int regret;
 	private int hope;
+	private String review;
 }

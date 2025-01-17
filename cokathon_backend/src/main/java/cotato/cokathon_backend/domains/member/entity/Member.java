@@ -4,6 +4,7 @@ import static lombok.AccessLevel.*;
 
 import org.hibernate.annotations.ColumnDefault;
 
+import cotato.cokathon_backend.domains.ai.dto.EmotionPointResponse;
 import cotato.cokathon_backend.domains.ai.dto.EmotionResponse;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -52,25 +53,8 @@ public class Member {
 		this.memberEmotion = memberEmotion;
 	}
 
-	public void updatePositiveAndNegative(EmotionResponse emotionResponse) {
-		int positive = 0;
-		int negative = 0;
-
-		// Positive emotions
-		positive += emotionResponse.getHappiness() * 20;
-		positive += emotionResponse.getLove() * 20;
-		positive += emotionResponse.getGratitude() * 20;
-		positive += emotionResponse.getHope() * 20;
-		positive += emotionResponse.getSurprise() * 20;
-
-		// Negative emotions
-		negative += emotionResponse.getSadness() * 10;
-		negative += emotionResponse.getAnger() * 10;
-		negative += emotionResponse.getFear() * 10;
-		negative += emotionResponse.getDisgust() * 10;
-		negative += emotionResponse.getRegret() * 10;
-
-		this.positive += positive;
-		this.negative += negative;
+	public void updatePositiveAndNegative(EmotionPointResponse emotionPointResponse) {
+		this.positive += emotionPointResponse.getPositive();
+		this.negative += emotionPointResponse.getNegative();
 	}
 }

@@ -5,6 +5,7 @@ import static jakarta.persistence.GenerationType.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import cotato.cokathon_backend.domains.ai.dto.EmotionResponse;
+import cotato.cokathon_backend.domains.ai.dto.GPTEmotionResponse;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -56,7 +57,7 @@ public class MemberEmotion {
 	@OneToOne(mappedBy = "memberEmotion")
 	private Member member;
 
-	public void updateEmotions(EmotionResponse emotionResponse) {
+	public void updateEmotions(GPTEmotionResponse emotionResponse) {
 		this.happiness += emotionResponse.getHappiness();
 		this.sadness += emotionResponse.getSadness();
 		this.anger += emotionResponse.getAnger();

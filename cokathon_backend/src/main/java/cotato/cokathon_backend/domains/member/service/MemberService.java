@@ -6,6 +6,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import cotato.cokathon_backend.common.exception.ApiException;
+import cotato.cokathon_backend.domains.ai.dto.EmotionPointResponse;
+import cotato.cokathon_backend.domains.ai.dto.EmotionResponse;
+import cotato.cokathon_backend.domains.ai.dto.GPTEmotionResponse;
 import cotato.cokathon_backend.domains.member.dto.request.CreateMemberRequest;
 import cotato.cokathon_backend.domains.member.dto.response.CreateMemberResponse;
 import cotato.cokathon_backend.domains.member.dto.response.FindMemberEmotionResponse;
@@ -61,5 +64,27 @@ public class MemberService {
 			.orElseThrow(() -> ApiException.from(MEMBER_NOT_FOUND));
 
 		return FindMemberEmotionResponse.from(member.getMemberEmotion());
+	}
+
+	// 멤버 긍정, 부정 계산
+	public EmotionPointResponse calcEmotionPoint(GPTEmotionResponse emotionResponse) {
+		int positive = 0;
+		int negative = 0;
+
+		// Positive emotions
+		positive += emotionResponse.getHappiness() * 20;
+		positive += emotionResponse.getLove() * 20;
+		positive += emotionResponse.getGratitude() * 20;
+		positive += emotionResponse.getHope() * 20;
+		positive += emotionResponse.getSurprise() * 20;
+
+		// Negative emotions
+		negative += emotionResponse.getSadness() * 10;
+		negative += emotionResponse.getAnger() * 10;
+		negative += emotionResponse.getFear() * 10;
+		negative += emotionResponse.getDisgust() * 10;
+		negative += emotionResponse.getRegret() * 10;
+
+		return new EmotionPointResponse(positive, negative);
 	}
 }

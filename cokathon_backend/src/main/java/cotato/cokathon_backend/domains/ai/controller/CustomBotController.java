@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import cotato.cokathon_backend.common.dto.DataResponse;
+import cotato.cokathon_backend.domains.ai.dto.CalcEmotionPointResponse;
 import cotato.cokathon_backend.domains.ai.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,12 +22,12 @@ public class CustomBotController {
 	private final ChatService chatService;
 
 	@GetMapping("/emotion/members/{memberId}")
-	public ResponseEntity<DataResponse<Void>> calcEmotionPoint(
+	public ResponseEntity<DataResponse<CalcEmotionPointResponse>> calcEmotionPoint(
 		@RequestParam(name = "prompt") String prompt,
 		@PathVariable(name = "memberId") Long memberId
 	) {
-		chatService.calcEmotionPointAndSave(prompt, memberId);
+		CalcEmotionPointResponse response = chatService.calcEmotionPointAndSave(prompt, memberId);
 
-		return ResponseEntity.ok(DataResponse.ok());
+		return ResponseEntity.ok(DataResponse.from(response));
 	}
 }
