@@ -2,15 +2,18 @@ package cotato.cokathon_backend.domains.member.entity;
 
 import static lombok.AccessLevel.*;
 
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.ColumnDefault;
-import org.springframework.boot.context.properties.bind.DefaultValue;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.AccessLevel;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,6 +22,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
+@Table(name = "member")
 public class Member {
 
 	@Id
@@ -38,8 +42,13 @@ public class Member {
 	@ColumnDefault("0")
 	private int negative = 0;
 
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "member_emotion_id")
+	private MemberEmotion memberEmotion;
+
 	@Builder
-	private Member(String email) {
+	private Member(String email, MemberEmotion memberEmotion) {
 		this.email = email;
+		this.memberEmotion = memberEmotion;
 	}
 }

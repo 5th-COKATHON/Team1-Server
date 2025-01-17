@@ -10,6 +10,7 @@ import cotato.cokathon_backend.domains.member.dto.request.CreateMemberRequest;
 import cotato.cokathon_backend.domains.member.dto.response.CreateMemberResponse;
 import cotato.cokathon_backend.domains.member.dto.response.FindMemberPointResponse;
 import cotato.cokathon_backend.domains.member.entity.Member;
+import cotato.cokathon_backend.domains.member.entity.MemberEmotion;
 import cotato.cokathon_backend.domains.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -28,8 +29,10 @@ public class MemberService {
 			throw ApiException.from(MEMBER_EMAIL_DUPLICATION);
 		}
 
+		MemberEmotion memberEmotion = new MemberEmotion();
 		Member member = Member.builder()
 			.email(request.email())
+			.memberEmotion(memberEmotion)
 			.build();
 
 		member = memberRepository.save(member);
