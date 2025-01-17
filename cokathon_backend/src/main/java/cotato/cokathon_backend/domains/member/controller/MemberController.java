@@ -1,6 +1,8 @@
 package cotato.cokathon_backend.domains.member.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +12,7 @@ import cotato.cokathon_backend.common.dto.DataResponse;
 import cotato.cokathon_backend.common.dto.ErrorResponse;
 import cotato.cokathon_backend.domains.member.dto.request.CreateMemberRequest;
 import cotato.cokathon_backend.domains.member.dto.response.CreateMemberResponse;
+import cotato.cokathon_backend.domains.member.dto.response.FindMemberPointResponse;
 import cotato.cokathon_backend.domains.member.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -20,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/member")
+@RequestMapping("/api/members")
 public class MemberController {
 
 	private final MemberService memberService;
@@ -46,6 +49,26 @@ public class MemberController {
 		@RequestBody @Valid CreateMemberRequest request
 	) {
 		CreateMemberResponse response = memberService.createMember(request);
+
+		return ResponseEntity.ok(DataResponse.from(response));
+	}
+
+	@GetMapping("/{memberId}/point")
+	@Operation(
+		summary = "포인트 조회",
+		description = """
+			멤버의 포인트를 조회한다.""",
+		responses = {
+			@ApiResponse(
+				responseCode = "200",
+				description = "성공"
+			)
+		}
+	)
+	public ResponseEntity<DataResponse<FindMemberPointResponse>> findMemberPoint(
+		@PathVariable Long memberId
+	) {
+		FindMemberPointResponse response = memberService.findMemberPoint(memberId);
 
 		return ResponseEntity.ok(DataResponse.from(response));
 	}

@@ -16,6 +16,7 @@ public enum ErrorCode {
 
 	//Member
 	MEMBER_EMAIL_DUPLICATION(HttpStatus.BAD_REQUEST, "이미 존재하는 이메일입니다.", "M-001"),
+	MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "멤버를 찾을 수 없습니다.", "M-002")
 	;
 
 	private final HttpStatus httpStatus;

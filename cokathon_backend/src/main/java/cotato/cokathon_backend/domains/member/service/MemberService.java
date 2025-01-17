@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import cotato.cokathon_backend.common.exception.ApiException;
 import cotato.cokathon_backend.domains.member.dto.request.CreateMemberRequest;
 import cotato.cokathon_backend.domains.member.dto.response.CreateMemberResponse;
+import cotato.cokathon_backend.domains.member.dto.response.FindMemberPointResponse;
 import cotato.cokathon_backend.domains.member.entity.Member;
 import cotato.cokathon_backend.domains.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -39,5 +40,12 @@ public class MemberService {
 	// 이메일 중복 체크
 	public boolean isExistEmail(String email) {
 		return memberRepository.existsByEmail(email);
+	}
+
+	public FindMemberPointResponse findMemberPoint(Long memberId) {
+		Member member = memberRepository.findById(memberId)
+			.orElseThrow(() -> ApiException.from(MEMBER_NOT_FOUND));
+
+		return new FindMemberPointResponse(member.getPositive(), member.getNegative());
 	}
 }
