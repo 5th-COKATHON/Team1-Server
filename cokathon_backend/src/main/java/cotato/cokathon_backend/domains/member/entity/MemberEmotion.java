@@ -1,14 +1,15 @@
 package cotato.cokathon_backend.domains.member.entity;
 
 import static jakarta.persistence.GenerationType.*;
-import static lombok.AccessLevel.*;
 
 import org.hibernate.annotations.ColumnDefault;
 
+import cotato.cokathon_backend.domains.ai.dto.EmotionResponse;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -51,4 +52,20 @@ public class MemberEmotion {
 
 	@ColumnDefault("0")
 	private int hope = 0;
+
+	@OneToOne(mappedBy = "memberEmotion")
+	private Member member;
+
+	public void updateEmotions(EmotionResponse emotionResponse) {
+		this.happiness += emotionResponse.getHappiness();
+		this.sadness += emotionResponse.getSadness();
+		this.anger += emotionResponse.getAnger();
+		this.fear += emotionResponse.getFear();
+		this.love += emotionResponse.getLove();
+		this.disgust += emotionResponse.getDisgust();
+		this.surprise += emotionResponse.getSurprise();
+		this.gratitude += emotionResponse.getGratitude();
+		this.regret += emotionResponse.getRegret();
+		this.hope += emotionResponse.getHope();
+	}
 }
